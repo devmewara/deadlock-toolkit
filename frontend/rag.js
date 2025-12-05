@@ -1,3 +1,4 @@
+// Revision 2: RAG module initialized
 let network = null;
 let nodes = new vis.DataSet([]);
 let edges = new vis.DataSet([]);
