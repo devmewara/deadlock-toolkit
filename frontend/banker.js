@@ -1,3 +1,4 @@
+// Revision 3: Banker module updated with table initialization comment
 function initBanker() {
     document.getElementById('banker-generate').addEventListener('click', generateBankerTables);
     document.getElementById('banker-check').addEventListener('click', checkSafeState);
