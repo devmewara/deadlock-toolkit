@@ -1,3 +1,4 @@
+// Revision 5: Scenarios module updated with revision tracking comment
 function initScenarios() {
     // Tab Switching
     const tabs = document.querySelectorAll('.tab-btn');
