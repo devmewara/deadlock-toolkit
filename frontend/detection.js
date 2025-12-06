@@ -1,3 +1,4 @@
+// Revision 4: Detection module updated with initial revision tracking
 function initDetection() {
     document.getElementById('detect-generate').addEventListener('click', generateDetectionTables);
     document.getElementById('detect-check').addEventListener('click', detectDeadlock);
