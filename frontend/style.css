@@ -1,3 +1,4 @@
+/* Revision 7: Final UI polish and code formatting update */
 :root {
     --primary-color: #3b82f6;
     --primary-hover: #2563eb;
@@ -399,4 +400,7 @@ input.table-input {
     border: none;
     border-radius: 0.25rem;
     cursor: pointer;
+}
+body {
+    margin: 8px; /* Slight UI polish */
 }
