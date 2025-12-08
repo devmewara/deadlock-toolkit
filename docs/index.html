@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deadlock Prevention & Recovery Toolkit</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Vis Network for RAG -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Deadlock Toolkit</h2>
+            </div>
+            <ul class="menu">
+                <li class="menu-item active" data-target="home">
+                    <span class="icon">🏠</span> Home
+                </li>
+                <li class="menu-item" data-target="rag">
+                    <span class="icon">🕸️</span> RAG Visualization
+                </li>
+                <li class="menu-item" data-target="banker">
+                    <span class="icon">🏦</span> Banker's Algorithm
+                </li>
+                <li class="menu-item" data-target="detection">
+                    <span class="icon">🔍</span> Detection & Recovery
+                </li>
+                <li class="menu-item" data-target="scenarios">
+                    <span class="icon">🎬</span> Scenarios
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+
+            <!-- Home Section -->
+            <section id="home" class="active-section">
+                <header class="header">
+                    <h1>Welcome to Deadlock Toolkit</h1>
+                    <p>Explore deadlock concepts, prevention, detection, and recovery mechanisms.</p>
+                </header>
+                <div class="cards-grid">
+                    <div class="card" onclick="document.querySelector('[data-target=\'rag\']').click()">
+                        <h3>Resource Allocation Graph</h3>
+                        <p>Visualize processes and resources. Detect cycles and deadlocks interactively.</p>
+                    </div>
+                    <div class="card" onclick="document.querySelector('[data-target=\'banker\']').click()">
+                        <h3>Banker's Algorithm</h3>
+                        <p>Simulate safe state checks and resource request handling.</p>
+                    </div>
+                    <div class="card" onclick="document.querySelector('[data-target=\'detection\']').click()">
+                        <h3>Detection & Recovery</h3>
+                        <p>Detect deadlocks in current state and recover by terminating processes.</p>
+                    </div>
+                    <div class="card" onclick="document.querySelector('[data-target=\'scenarios\']').click()">
+                        <h3>Classic Scenarios</h3>
+                        <p>Visual simulations of Dining Philosophers and Traffic Deadlock problems.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RAG Section -->
+            <section id="rag">
+                <header class="header">
+                    <h1>Resource Allocation Graph (RAG)</h1>
+                    <p>Build a graph of processes and resources to check for deadlocks.</p>
+                </header>
+                <div class="controls">
+                    <button id="rag-add-process" class="btn primary">Add Process</button>
+                    <button id="rag-add-resource" class="btn primary">Add Resource</button>
+                    <button id="rag-reset" class="btn warning">Reset</button>
+                    <button id="rag-check" class="btn success">Check Deadlock</button>
+                </div>
+                <div class="rag-container">
+                    <div id="rag-network"></div>
+                    <div id="rag-status" class="status-panel">
+                        <h3>Status</h3>
+                        <p id="rag-message">Ready to build graph...</p>
+                    </div>
+                </div>
+                <div class="instructions">
+                    <p><strong>Instructions:</strong> Click 'Add Process' or 'Add Resource' to create nodes. Drag from
+                        one node to another to create an edge (Request or Assignment).</p>
+                </div>
+            </section>
+
+            <!-- Banker's Algorithm Section -->
+            <section id="banker">
+                <header class="header">
+                    <h1>Banker's Algorithm</h1>
+                    <p>Deadlock avoidance using the Banker's Algorithm.</p>
+                </header>
+                <div class="input-group">
+                    <label>Processes: <input type="number" id="banker-processes" value="5" min="1" max="10"></label>
+                    <label>Resources: <input type="number" id="banker-resources" value="3" min="1" max="5"></label>
+                    <button id="banker-generate" class="btn primary">Generate Tables</button>
+                </div>
+
+                <div id="banker-tables" class="tables-container" style="display:none;">
+                    <div class="table-wrapper">
+                        <h3>Allocation</h3>
+                        <table id="banker-allocation"></table>
+                    </div>
+                    <div class="table-wrapper">
+                        <h3>Max</h3>
+                        <table id="banker-max"></table>
+                    </div>
+                    <div class="table-wrapper">
+                        <h3>Available</h3>
+                        <table id="banker-available"></table>
+                    </div>
+                </div>
+
+                <div class="actions" style="display:none;" id="banker-actions">
+                    <button id="banker-check" class="btn success">Check Safe State</button>
+                </div>
+
+                <div id="banker-output" class="output-panel"></div>
+            </section>
+
+            <!-- Detection & Recovery Section -->
+            <section id="detection">
+                <header class="header">
+                    <h1>Deadlock Detection & Recovery</h1>
+                    <p>Detect deadlocks and recover by terminating processes.</p>
+                </header>
+                <div class="input-group">
+                    <label>Processes: <input type="number" id="detect-processes" value="5" min="1" max="10"></label>
+                    <label>Resources: <input type="number" id="detect-resources" value="3" min="1" max="5"></label>
+                    <button id="detect-generate" class="btn primary">Generate Tables</button>
+                </div>
+
+                <div id="detect-tables" class="tables-container" style="display:none;">
+                    <div class="table-wrapper">
+                        <h3>Allocation</h3>
+                        <table id="detect-allocation"></table>
+                    </div>
+                    <div class="table-wrapper">
+                        <h3>Request</h3>
+                        <table id="detect-request"></table>
+                    </div>
+                    <div class="table-wrapper">
+                        <h3>Available</h3>
+                        <table id="detect-available"></table>
+                    </div>
+                </div>
+
+                <div class="actions" style="display:none;" id="detect-actions">
+                    <button id="detect-check" class="btn success">Detect Deadlock</button>
+                </div>
+
+                <div id="detect-output" class="output-panel"></div>
+                <div id="recovery-panel" class="recovery-panel" style="display:none;">
+                    <h3>Recovery Options</h3>
+                    <div id="victim-list"></div>
+                </div>
+            </section>
+
+            <!-- Scenarios Section -->
+            <section id="scenarios">
+                <header class="header">
+                    <h1>Deadlock Scenarios</h1>
+                </header>
+
+                <div class="scenario-tabs">
+                    <button class="tab-btn active" data-scenario="dining">Dining Philosophers</button>
+                    <button class="tab-btn" data-scenario="traffic">Traffic Deadlock</button>
+                </div>
+
+                <div id="dining-scenario" class="scenario-content active">
+                    <h2>Dining Philosophers Problem</h2>
+                    <div class="controls">
+                        <button id="dining-start" class="btn primary">Start Simulation</button>
+                        <button id="dining-reset" class="btn warning">Reset</button>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="dining-canvas" width="600" height="400"></canvas>
+                    </div>
+                    <div id="dining-status" class="status-text">Click Start to begin...</div>
+                </div>
+
+                <div id="traffic-scenario" class="scenario-content">
+                    <h2>Traffic Intersection Deadlock</h2>
+                    <div class="controls">
+                        <button id="traffic-start" class="btn primary">Start Simulation</button>
+                        <button id="traffic-deadlock" class="btn danger">Cause Deadlock</button>
+                        <button id="traffic-reset" class="btn warning">Reset</button>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="traffic-canvas" width="600" height="400"></canvas>
+                    </div>
+                    <div id="traffic-status" class="status-text">Click Start to begin...</div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="rag.js"></script>
+    <script src="banker.js"></script>
+    <script src="detection.js"></script>
+    <script src="scenarios.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
