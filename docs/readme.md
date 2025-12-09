@@ -61,22 +61,24 @@ These scenarios visually demonstrate circular wait and mutual blocking.
 
 ## 🔹 GitHub Revision Workflow
 
-This project follows a structured multi-branch workflow:
+This project follows a professional multi-branch workflow.
+Each major module was developed in its own dedicated branch, ensuring clean separation of features and clear revision tracking.
+The branches used during development include:
 
-| Commit No. | Branch Name       | Description |
-|------------|-------------------|-------------|
-| 1          | main              | Initial project structure |
-| 2          | rag-module        | RAG module update |
-| 3          | banker-module     | Banker module update |
-| 4          | detection-module  | Detection module update |
-| 5          | scenarios-module  | Scenarios simulation update |
-| 6          | documentation     | Documentation improvements |
-| 7          | final-polish      | Final UI polish and cleanup |
+rag-module
 
-Each branch was created, updated, and merged into `main` with meaningful changes.  
-This ensures a clean and professional revision history.  
-:contentReference[oaicite:0]{index=0}
+banker-module
 
+detection-module
+
+scenarios-module
+
+rag-fix
+
+documentation
+
+Each branch contained meaningful updates and was merged into the main branch after verification.
+This approach ensures a clean, traceable, and industry-standard revision history.
 ---
 
 ## 🔹 Author
