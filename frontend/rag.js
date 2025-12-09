@@ -9,37 +9,26 @@ function initRAG() {
     const container = document.getElementById('rag-network');
     const data = { nodes: nodes, edges: edges };
     const options = {
-        nodes: {
-            shape: 'box',
-            font: { size: 16 }
-        },
-        edges: {
-            arrows: 'to',
-            smooth: { type: 'cubicBezier' }
-        },
         physics: {
-            enabled: true,
-            stabilization: { iterations: 100 }
+            enabled: false
+        },
+        layout: {
+            randomSeed: 2,
+            improvedLayout: true
+        },
+        interaction: {
+            zoomView: false,
+            dragView: false,
+            dragNodes: true   // Needed to move nodes manually
         },
         manipulation: {
-            enabled: true,
+            enabled: true,     // Enables Add Edge interaction
             addEdge: function (data, callback) {
                 if (data.from === data.to) {
                     alert("Self-loops are not allowed.");
                     return;
                 }
-                // Check if edge already exists
-                const exists = edges.get({
-                    filter: function (item) {
-                        return item.from === data.from && item.to === data.to;
-                    }
-                });
-                if (exists.length > 0) {
-                    alert("Edge already exists.");
-                    return;
-                }
 
-                // Determine edge type based on nodes
                 const fromNode = nodes.get(data.from);
                 const toNode = nodes.get(data.to);
 
@@ -48,11 +37,26 @@ function initRAG() {
                     return;
                 }
 
-                data.label = fromNode.group === 'process' ? 'Request' : 'Assign';
+                data.label = fromNode.group === "process" ? "Request" : "Assign";
+
                 callback(data);
+                edges.add(data);    // ⭐ MUST ADD THIS ⭐
             }
+
+        },
+        nodes: {
+            shape: "box",
+            font: { size: 16, color: "white" },
+            borderWidth: 2
+        },
+        edges: {
+            arrows: "to",
+            smooth: false,
+            color: { color: "#333" }
         }
     };
+
+
 
     network = new vis.Network(container, data, options);
 
@@ -69,11 +73,14 @@ function addProcess() {
         id: `P${processCount}`,
         label: `P${processCount}`,
         group: 'process',
+        x: 200 + Math.random() * 200,
+        y: 100 + Math.random() * 200,
         color: { background: '#3b82f6', border: '#2563eb' },
         font: { color: 'white' },
         shape: 'ellipse'
     });
 }
+
 
 function addResource() {
     resourceCount++;
@@ -81,11 +88,14 @@ function addResource() {
         id: `R${resourceCount}`,
         label: `R${resourceCount}`,
         group: 'resource',
+        x: 300 + Math.random() * 200,
+        y: 200 + Math.random() * 200,
         color: { background: '#10b981', border: '#059669' },
         font: { color: 'white' },
         shape: 'box'
     });
 }
+
 
 function resetRAG() {
     nodes.clear();
@@ -155,3 +165,4 @@ function updateStatus(msg, type) {
     else if (type === 'success') statusEl.style.color = 'var(--success-color)';
     else statusEl.style.color = 'var(--text-color)';
 }
+
