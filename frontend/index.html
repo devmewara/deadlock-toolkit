@@ -5,80 +5,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deadlock Prevention & Recovery Toolkit</title>
+
     <link rel="stylesheet" href="style.css">
-    <!-- Vis Network for RAG -->
-    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+    <!-- Vis.js (for RAG) -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <div class="container">
+
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">
                 <h2>Deadlock Toolkit</h2>
             </div>
+
             <ul class="menu">
-                <li class="menu-item active" data-target="home">
-                    <span class="icon">🏠</span> Home
-                </li>
-                <li class="menu-item" data-target="rag">
-                    <span class="icon">🕸️</span> RAG Visualization
-                </li>
-                <li class="menu-item" data-target="banker">
-                    <span class="icon">🏦</span> Banker's Algorithm
-                </li>
-                <li class="menu-item" data-target="detection">
-                    <span class="icon">🔍</span> Detection & Recovery
-                </li>
-                <li class="menu-item" data-target="scenarios">
-                    <span class="icon">🎬</span> Scenarios
-                </li>
+                <li class="menu-item active" data-target="home">🏠 Home</li>
+                <li class="menu-item" data-target="rag">🕸️ RAG Visualization</li>
+                <li class="menu-item" data-target="banker">🏦 Banker's Algorithm</li>
+                <li class="menu-item" data-target="detection">🔍 Detection & Recovery</li>
+                <li class="menu-item" data-target="scenarios">🎬 Scenarios</li>
             </ul>
         </nav>
 
         <!-- Main Content -->
         <main class="content">
 
-            <!-- Home Section -->
+            <!-- HOME -->
             <section id="home" class="active-section">
                 <header class="header">
                     <h1>Welcome to Deadlock Toolkit</h1>
-                    <p>Explore deadlock concepts, prevention, detection, and recovery mechanisms.</p>
+                    <p>Explore deadlock concepts, prevention mechanisms, detection & recovery.</p>
                 </header>
+
                 <div class="cards-grid">
-                    <div class="card" onclick="document.querySelector('[data-target=\'rag\']').click()">
+                    <div class="card" onclick="openSection('rag')">
                         <h3>Resource Allocation Graph</h3>
-                        <p>Visualize processes and resources. Detect cycles and deadlocks interactively.</p>
+                        <p>Visualize processes and resources.</p>
                     </div>
-                    <div class="card" onclick="document.querySelector('[data-target=\'banker\']').click()">
+                    <div class="card" onclick="openSection('banker')">
                         <h3>Banker's Algorithm</h3>
-                        <p>Simulate safe state checks and resource request handling.</p>
+                        <p>Check safety & generate safe sequence.</p>
                     </div>
-                    <div class="card" onclick="document.querySelector('[data-target=\'detection\']').click()">
+                    <div class="card" onclick="openSection('detection')">
                         <h3>Detection & Recovery</h3>
-                        <p>Detect deadlocks in current state and recover by terminating processes.</p>
+                        <p>Detect deadlocks and recover.</p>
                     </div>
-                    <div class="card" onclick="document.querySelector('[data-target=\'scenarios\']').click()">
+                    <div class="card" onclick="openSection('scenarios')">
                         <h3>Classic Scenarios</h3>
-                        <p>Visual simulations of Dining Philosophers and Traffic Deadlock problems.</p>
+                        <p>Dining Philosophers, Traffic Deadlock, etc.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- RAG Section -->
+            <!-- RAG SECTION -->
             <section id="rag">
                 <header class="header">
-                    <h1>Resource Allocation Graph (RAG)</h1>
-                    <p>Build a graph of processes and resources to check for deadlocks.</p>
+                    <h1>Resource Allocation Graph</h1>
+                    <p>Create processes, resources & detect cycles.</p>
                 </header>
+
                 <div class="controls">
                     <button id="rag-add-process" class="btn primary">Add Process</button>
                     <button id="rag-add-resource" class="btn primary">Add Resource</button>
                     <button id="rag-reset" class="btn warning">Reset</button>
                     <button id="rag-check" class="btn success">Check Deadlock</button>
                 </div>
+
                 <div class="rag-container">
                     <div id="rag-network"></div>
                     <div id="rag-status" class="status-panel">
@@ -86,21 +84,17 @@
                         <p id="rag-message">Ready to build graph...</p>
                     </div>
                 </div>
-                <div class="instructions">
-                    <p><strong>Instructions:</strong> Click 'Add Process' or 'Add Resource' to create nodes. Drag from
-                        one node to another to create an edge (Request or Assignment).</p>
-                </div>
             </section>
 
-            <!-- Banker's Algorithm Section -->
+            <!-- BANKER SECTION -->
             <section id="banker">
                 <header class="header">
                     <h1>Banker's Algorithm</h1>
-                    <p>Deadlock avoidance using the Banker's Algorithm.</p>
                 </header>
+
                 <div class="input-group">
-                    <label>Processes: <input type="number" id="banker-processes" value="5" min="1" max="10"></label>
-                    <label>Resources: <input type="number" id="banker-resources" value="3" min="1" max="5"></label>
+                    <label>Processes: <input type="number" id="banker-processes" value="5" min="1"></label>
+                    <label>Resources: <input type="number" id="banker-resources" value="3" min="1"></label>
                     <button id="banker-generate" class="btn primary">Generate Tables</button>
                 </div>
 
@@ -114,27 +108,31 @@
                         <table id="banker-max"></table>
                     </div>
                     <div class="table-wrapper">
+                        <h3>Need</h3>
+                        <table id="banker-need"></table>
+                    </div>
+                    <div class="table-wrapper">
                         <h3>Available</h3>
                         <table id="banker-available"></table>
                     </div>
                 </div>
 
-                <div class="actions" style="display:none;" id="banker-actions">
+                <div id="banker-actions" class="actions" style="display:none;">
                     <button id="banker-check" class="btn success">Check Safe State</button>
                 </div>
 
                 <div id="banker-output" class="output-panel"></div>
             </section>
 
-            <!-- Detection & Recovery Section -->
+            <!-- DETECTION SECTION -->
             <section id="detection">
                 <header class="header">
                     <h1>Deadlock Detection & Recovery</h1>
-                    <p>Detect deadlocks and recover by terminating processes.</p>
                 </header>
+
                 <div class="input-group">
-                    <label>Processes: <input type="number" id="detect-processes" value="5" min="1" max="10"></label>
-                    <label>Resources: <input type="number" id="detect-resources" value="3" min="1" max="5"></label>
+                    <label>Processes: <input type="number" id="detect-processes" value="5" min="1"></label>
+                    <label>Resources: <input type="number" id="detect-resources" value="3" min="1"></label>
                     <button id="detect-generate" class="btn primary">Generate Tables</button>
                 </div>
 
@@ -153,63 +151,117 @@
                     </div>
                 </div>
 
-                <div class="actions" style="display:none;" id="detect-actions">
+                <div id="detect-actions" class="actions" style="display:none;">
                     <button id="detect-check" class="btn success">Detect Deadlock</button>
                 </div>
 
                 <div id="detect-output" class="output-panel"></div>
-                <div id="recovery-panel" class="recovery-panel" style="display:none;">
-                    <h3>Recovery Options</h3>
-                    <div id="victim-list"></div>
-                </div>
             </section>
 
-            <!-- Scenarios Section -->
+            <!-- SCENARIOS SECTION -->
             <section id="scenarios">
                 <header class="header">
-                    <h1>Deadlock Scenarios</h1>
+                    <h1>Classic Deadlock Scenarios</h1>
+                    <p>Explore real-world deadlock problems and practical examples.</p>
                 </header>
 
-                <div class="scenario-tabs">
-                    <button class="tab-btn active" data-scenario="dining">Dining Philosophers</button>
-                    <button class="tab-btn" data-scenario="traffic">Traffic Deadlock</button>
-                </div>
+                <div class="scenario-cards">
 
-                <div id="dining-scenario" class="scenario-content active">
-                    <h2>Dining Philosophers Problem</h2>
-                    <div class="controls">
-                        <button id="dining-start" class="btn primary">Start Simulation</button>
-                        <button id="dining-reset" class="btn warning">Reset</button>
+                    <!-- Dining Philosophers -->
+                    <div class="scenario-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Dining_philosophers.png"
+                            class="scenario-img">
+                        <h3>🍽️ Dining Philosophers</h3>
+                        <p><b>Scenario:</b> Five philosophers sit around a table with five chopsticks.</p>
+                        <p><b>Deadlock Example:</b> Every philosopher picks their left chopstick. Nobody gets a pair →
+                            all wait forever.</p>
+                        <p><b>Cause:</b> Circular Wait + Hold & Wait.</p>
+                        <p><b>Prevention:</b>
+                            • Order the forks (left must be lower-numbered for all)
+                            • Introduce a butler (permit only 4 philosophers to pick)
+                        </p>
                     </div>
-                    <div class="canvas-wrapper">
-                        <canvas id="dining-canvas" width="600" height="400"></canvas>
-                    </div>
-                    <div id="dining-status" class="status-text">Click Start to begin...</div>
-                </div>
 
-                <div id="traffic-scenario" class="scenario-content">
-                    <h2>Traffic Intersection Deadlock</h2>
-                    <div class="controls">
-                        <button id="traffic-start" class="btn primary">Start Simulation</button>
-                        <button id="traffic-deadlock" class="btn danger">Cause Deadlock</button>
-                        <button id="traffic-reset" class="btn warning">Reset</button>
+                    <!-- Producer Consumer -->
+                    <div class="scenario-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Producer-consumer.svg/640px-Producer-consumer.svg.png"
+                            class="scenario-img">
+                        <h3>🏭 Producer–Consumer</h3>
+                        <p><b>Scenario:</b> Producers insert items into a bounded buffer, consumers remove them.</p>
+                        <p><b>Deadlock Example:</b>
+                            Producer waits because buffer is full;
+                            Consumer waits because buffer is empty → circular wait.
+                        </p>
+                        <p><b>Cause:</b> Incorrect semaphore ordering.</p>
+                        <p><b>Prevention:</b>
+                            • Use semaphores (empty, full, mutex)
+                            • Monitor-based synchronization
+                        </p>
                     </div>
-                    <div class="canvas-wrapper">
-                        <canvas id="traffic-canvas" width="600" height="400"></canvas>
+
+                    <!-- Readers Writers -->
+                    <div class="scenario-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Readers-writers_problem.svg/640px-Readers-writers_problem.svg.png"
+                            class="scenario-img">
+                        <h3>📚 Readers–Writers</h3>
+                        <p><b>Scenario:</b> Readers can read simultaneously; writers need exclusive access.</p>
+                        <p><b>Deadlock Example:</b>
+                            Writer waits forever because continuous readers keep coming.
+                        </p>
+                        <p><b>Cause:</b> Starvation → writer never gets the lock.</p>
+                        <p><b>Prevention:</b>
+                            • Writer priority locks
+                            • Fair queueing / ticket-based access
+                        </p>
                     </div>
-                    <div id="traffic-status" class="status-text">Click Start to begin...</div>
+
+                    <!-- Traffic Intersection -->
+                    <div class="scenario-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Gridlock.jpg/640px-Gridlock.jpg"
+                            class="scenario-img">
+                        <h3>🚗 Traffic Intersection Deadlock</h3>
+                        <p><b>Scenario:</b> Four cars enter a 4-way intersection from all directions.</p>
+                        <p><b>Deadlock Example:</b>
+                            North car waits for East → East waits South → South waits West → West waits North.
+                        </p>
+                        <p><b>Cause:</b> Circular wait + no preemption.</p>
+                        <p><b>Prevention:</b>
+                            • Traffic lights
+                            • Stop signs
+                            • Priority rules (Right-of-way)
+                        </p>
+                    </div>
+
                 </div>
             </section>
 
         </main>
+
     </div>
 
-    <!-- Scripts -->
+    <!-- Script Loader -->
     <script src="rag.js"></script>
     <script src="banker.js"></script>
     <script src="detection.js"></script>
     <script src="scenarios.js"></script>
     <script src="app.js"></script>
+
+    <script>
+        window.onload = () => {
+            initRAG();
+            initBanker();
+            initDetection();
+            initScenarios();
+        };
+
+        function openSection(id) {
+            document.querySelectorAll("section").forEach(s => s.classList.remove("active-section"));
+            document.getElementById(id).classList.add("active-section");
+            document.querySelectorAll(".menu-item").forEach(m => m.classList.remove("active"));
+            document.querySelector(`[data-target='${id}']`).classList.add("active");
+        }
+    </script>
+
 </body>
 
 </html>
